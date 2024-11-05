@@ -1,0 +1,178 @@
+
+Alenti Manager:
+
+https://docs.ajenti.org/en/stable/man/install.html
+https://www.tecmint.com/install-ajenti-control-panel-debian-ubuntu/
+
+sudo mkdir ~/.ssh
+sudo nano ~/.ssh/authorized_keys
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5wXB2sLYcvV/zmeWP0XvsGCIaZNn5llxG9TM+AQ95N5gypN7SL2cRQ0/Pgl25xkZUFRjZC7VJotoXwJNOqkxNulwl5RYYmOFvtl5rJP/qKSEE8PBIVH59AOxki7yFly+XOq7D6XMdiF2qata6ccCK/8Pf5gvvIj5KZJTQfp84LkEt6w5oWFZc3QkQdP5XM2cmemam2Enx6+qEnjeyNDzxxRIBAL2CQ+TRX1e7BW63OvzWOswm0QFOzf/Db/bunS3Otz+4Ma4rdUz2bVHLJU6dq/O6Iq0ac7S9XL+rDlJrb+5VsqdQT/odrC7fwlOY+OMZ4JlBnHB8warIsTbw/b8fa5g6EFDhSpsq54LiPY7lMu7XOGvxac6xWaioUG+v3VpshjWOA411X9oe6MW7ABulK5tEIJeuwsjWx9e34fFeAY3NhQemnhLy93rMB0tEMhaBIuW8l0NXqXfH+dE5ydZF1wXxHA+jboiHvEjQxREUJBjPhCedEJhefjASFGrti15LaVtyj5Z24HzTnqavYEs3axVZygvhBfv5Eu6uYx0OkNXp1wM+btFwkJxjgs6qpdltrBN1gApGHPso33mCNTJjvcJFBxKNHMZ/PCsn7YOy2nhOL0wI+MJ06TI/p2R4CTVzcXiY0JsBO3xjxLl/TG7VwEavSKPomUgRMki7YEc8PQ== ubuntu
+
+sudo chmod 600 ~/.ssh/authorized_keys
+exit
+
+sudo nano /etc/hosts
+sudo nano /etc/hostname
+sudo reboot
+
+sudo apt update && sudo apt upgrade -y
+sudo apt autoremove
+
+
+
+
+
+
+Fix add-apt-repository: command not found Error,
+
+1. Run the apt update command in the terminal to update the APT repositories:
+
+sudo apt update
+
+Wait for the update to complete.
+
+2. Install the software-properties-common package using the apt-get command:
+
+sudo apt-get install software-properties-common
+
+4. Update the APT repositories after installation:
+
+sudo apt update
+
+5. Verify the installation with the following command:
+
+add-apt-repository --help
+
+
+==========================
+Ajenti Manual Installation:
+
+sudo add-apt-repository universe
+
+sudo apt-get install build-essential python3-pip python3-dev python3-lxml libssl-dev python3-dbus python3-augeas python3-apt ntpdate
+
+sudo pip3 install setuptools pip wheel -U
+
+Minimal install:
+
+sudo pip3 install ajenti-panel ajenti.plugin.core ajenti.plugin.dashboard ajenti.plugin.settings ajenti.plugin.plugins
+
+or With all plugins:
+
+sudo pip3 install ajenti-panel ajenti.plugin.ace ajenti.plugin.augeas ajenti.plugin.auth-users ajenti.plugin.core ajenti.plugin.dashboard ajenti.plugin.datetime ajenti.plugin.filemanager ajenti.plugin.filesystem ajenti.plugin.network ajenti.plugin.notepad ajenti.plugin.packages ajenti.plugin.passwd ajenti.plugin.plugins ajenti.plugin.power ajenti.plugin.services ajenti.plugin.settings ajenti.plugin.terminal
+
+
+sudo pip3 list | grep aj
+
+sudo ufw allow 22/tcp
+sudo ufw allow 53/udp
+sudo ufw allow 53,80,443,25,587,465,143,993/tcp
+sudo ufw logging on
+sudo ufw logging medium
+sudo systemctl enable ufw
+sudo apt upgrade -y
+sudo ufw allow 8000/tcp
+
+=============================================
+#Automatic Installation in virtual environment
+Caution: Please note that this install method is still under tests. Ajenti starts successfully on the previously mentioned supported operating systems, but all functionalities were not tested. Be kind to report any problem with this install method as issue here : https://github.com/ajenti/ajenti/issues
+
+curl https://raw.githubusercontent.com/ajenti/ajenti/master/scripts/install-venv.sh | sudo bash -s -
+
+#Any problem with this install method as issue here : https://github.com/ajenti/ajenti/issues
+
+sudo systemctl status ajenti
+
+ss -pnltue | grep 8000
+
+The Ajenti service can be started, stopped, and restarted using the following commands.
+
+sudo systemctl start ajenti
+sudo systemctl stop ajenti
+sudo systemctl restart ajenti
+
+
+
+
+
+
+
+XXXXXXXXXXXXXXXXXXXXXX
+======================
+Automatic Installation
+curl https://raw.githubusercontent.com/ajenti/ajenti/master/scripts/install.sh | sudo bash -s -
+======================
+or 
+======================
+
+curl -O https://raw.githubusercontent.com/ajenti/ajenti/master/scripts/install.sh
+
+sudo bash ./install.sh
+
+======================
+XXXXXXXXXXXXXXXXXXXXXX
+
+
+
+===================
+#Uninstall Ajenti 2
+
+Ajenti is a collection of Python modules installed with pip, delivered with an init script ( systemd or sysvinit ). So it’s necessary to remove the init script, then the Python librairies, and the configurations files.
+
+#Systemd
+
+sudo systemctl stop ajenti.service
+sudo systemctl disable ajenti.service
+sudo systemctl daemon-reload
+sudo rm -f /lib/systemd/system/ajenti.service
+
+
+#SysVinit
+
+/etc/init.d/ajenti stop
+rm -f /etc/init/ajenti.conf
+
+#Python3 modules
+List all modules from Ajenti:
+
+sudo pip3 list | grep aj
+
+The result should be something like ( eventually more or less plugins ):
+
+aj                        2.2.10
+ajenti-panel              2.2.10
+ajenti.plugin.ace         0.32
+ajenti.plugin.augeas      0.20
+ajenti.plugin.auth_users  0.33
+ajenti.plugin.core        0.109
+ajenti.plugin.dashboard   0.42
+ajenti.plugin.datetime    0.42
+ajenti.plugin.filemanager 0.31
+ajenti.plugin.filesystem  0.50
+ajenti.plugin.network     0.30
+ajenti.plugin.notepad     0.30
+ajenti.plugin.packages    0.36
+ajenti.plugin.passwd      0.27
+ajenti.plugin.plugins     0.52
+ajenti.plugin.power       0.25
+ajenti.plugin.services    0.35
+ajenti.plugin.settings    0.34
+ajenti.plugin.terminal    0.42
+
+#Then simply remove all these modules:
+
+sudo pip3 uninstall -y aj ajenti-panel ajenti.plugin.ace ajenti.plugin.auth-users ajenti.plugin.core ajenti.plugin.dashboard ajenti.plugin.filesystem ajenti.plugin.passwd ajenti.plugin.plugins ajenti.plugin.session-list ajenti.plugin.settings
+
+
+#Configuration files
+If you don’t need it for later, just delete the directory /etc/ajenti/:
+
+sudo rm -rf /etc/ajenti/
+
+=======================
+
+sudo apt update
+sudo apt install ubuntu-advantage-tools
+sudo pro attach C125CowkjULAFFjvSoFTqdczEmWCP9
+
