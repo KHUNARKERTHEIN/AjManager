@@ -174,5 +174,4 @@ sudo rm -rf /etc/ajenti/
 
 sudo apt update
 sudo apt install ubuntu-advantage-tools
-sudo pro attach C125CowkjULAFFjvSoFTqdczEmWCP9
-
+sudo pro attach xxxxxxxxxxxxxxxxxxxxxxx
